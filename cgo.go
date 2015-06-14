@@ -96,9 +96,9 @@ func main() {
 	if err != nil {
 		fmt.Println("net.Dial failed.", err)
 	}
-	fmt.Fprintf(conn, pkg.Bytes())
+	conn.Write(pkg.Bytes())
 
-	status, err := bufio.NewReader(conn).ReadBytes()
+	status, err := bufio.NewReader(conn).ReadBytes(0x55)
 	if err != nil {
 		fmt.Println("readbytes err, ", err)
 	}
