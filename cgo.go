@@ -28,12 +28,12 @@ type ByteStream struct {
 	realwrite bool
 }
 
+func (bs *ByteStream) pushByte(b byte) {
+	binary.BigEndian.PutUint16(bs.pkg, b)
+}
+
 func main() {
-	//pkg := bytes.NewBufferString("")
-	//pkg.WriteByte(c)
-	var a uint16 = 0x55AA
-	b := make([]byte, 2)
-	binary.BigEndian.PutUint16(b, a)
+	var enc encoder
 	fmt.Println(b)
 }
 
