@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/binary"
 	"fmt"
+	"net"
 )
 
 func makePkgHead(cmd uint32, bodylen uint32) *bytes.Buffer {
@@ -89,4 +91,16 @@ func main() {
 	binary.Write(pkg, binary.BigEndian, ETX)
 
 	fmt.Printf("BODY=%x, LEN=%d\n", pkg, pkg.Len())
+
+	conn, err := net.Dial("tcp", "10.12.197.237:53101")
+	if err != nil {
+		fmt.Println("net.Dial failed.", err)
+	}
+	fmt.Fprintf(conn, pkg.Bytes())
+
+	status, err := bufio.NewReader(conn).ReadBytes()
+	if err != nil {
+		fmt.Println("readbytes err, ", err)
+	}
+	fmt.Printf("%x\n", status)
 }
